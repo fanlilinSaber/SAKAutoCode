@@ -41,24 +41,25 @@
 + (NSString *)propertyCodeWithDictionary:(NSDictionary *)dict
 {
     __block NSString *outputCode = @"";
+    __block NSString *note = @"/// <##> \n";
     
     [dict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         NSString *temp = @"";
         NSLog(@"%@",[obj class]);
         if ([obj isKindOfClass:NSClassFromString(@"__NSCFString")] || [obj isKindOfClass:NSClassFromString(@"NSTaggedPointerString")] || [obj isKindOfClass:NSClassFromString(@"__NSCFConstantString")]) {
-            temp = [NSString stringWithFormat:@"@property (nonatomic, copy) NSString *%@;",key];
+            temp = [note stringByAppendingFormat:@"@property (nonatomic, copy) NSString *%@;",key];
         }
         else if ([obj isKindOfClass:NSClassFromString(@"__NSCFNumber")]) {
-            temp = [NSString stringWithFormat:@"@property (nonatomic, strong) NSNumber *%@;",key];
+            temp = [note stringByAppendingFormat:@"@property (nonatomic, strong) NSNumber *%@;",key];
         }
         else if ([obj isKindOfClass:NSClassFromString(@"__NSCFArray")] || [obj isKindOfClass:NSClassFromString(@"__NSArrayI")] || [obj isKindOfClass:NSClassFromString(@"__NSArray0")]) {
-            temp = [NSString stringWithFormat:@"@property (nonatomic, copy) NSArray *%@;",key];
+            temp = [note stringByAppendingFormat:@"@property (nonatomic, copy) NSArray *%@;",key];
         }
         else if ([obj isKindOfClass:NSClassFromString(@"__NSCFDictionary")] || [obj isKindOfClass:NSClassFromString(@"__NSDictionaryI")]) {
-            temp = [NSString stringWithFormat:@"@property (nonatomic, copy) NSDictionary *%@;",key];
+            temp = [note stringByAppendingFormat:@"@property (nonatomic, copy) NSDictionary *%@;",key];
         }
         else if ([obj isKindOfClass:NSClassFromString(@"__NSCFBoolean")]) {
-            temp = [NSString stringWithFormat:@"@property (nonatomic, assign) BOOL %@;",key];
+            temp = [note stringByAppendingFormat:@"@property (nonatomic, assign) BOOL %@;",key];
         }
         if (temp.length > 0) {
             outputCode = [outputCode stringByAppendingFormat:@"\n%@", temp];
